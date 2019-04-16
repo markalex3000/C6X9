@@ -14,7 +14,7 @@ Standard opening
 global variables
 */
 
-vector<char> user_input = { 0 };
+vector<char> user_input;
 
 /*
 functions declarations
@@ -22,7 +22,7 @@ functions declarations
 
 bool get_user_input(vector<char>& vc);
 void output(vector<char>& vc);
-int make_ingeger(vector<char>& vc);
+int make_integer(vector<char>& vc);
 string make_string(vector<char>& vc);
 
 /*
@@ -54,7 +54,18 @@ void output(vector<char>& vc) {
 	cout << "\n\n";
 }
 
+int make_integer(vector<char>& vc)  {
+	int the_integer = { 0 };
+	int power_of_ten = { 1 };
+	int countdown = vc.size() - 1;
 
+	for (auto it = begin(vc); it != end(vc); ++it) {
+		power_of_ten = pow(10,countdown);
+		the_integer += (*it - '0' )* power_of_ten;
+		--countdown;
+	}
+	return the_integer;
+}
 
 int main() {
 
@@ -69,6 +80,7 @@ int main() {
 	cout << "Enter up to four digits > ";
 	return_value = get_user_input(user_input);
 	output(user_input);
+	cout << "The Integer value is: " << make_integer(user_input)<< "\n";
 	keep_window_open();
 }
 
