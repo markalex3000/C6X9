@@ -20,6 +20,7 @@ vector<char> user_input;
 functions declarations
 */
 
+bool yes_no(string s);
 bool get_user_input(vector<char>& vc);
 void output(vector<char>& vc);
 int make_integer(vector<char>& vc);
@@ -28,6 +29,23 @@ string make_string(vector<char>& vc);
 /*
 fucntion definitions
 */
+
+bool yes_no(string s) {
+	char response{ 'X' };
+	cout << s << " (y/n): ";
+	cin >> response;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	switch (response)
+	{
+	case 'y':
+		return true;
+	case 'n':
+		return false;
+	default:
+		return false;
+	}
+}
 
 bool get_user_input(vector<char>& vc) {
 	char temp = { 0 };
@@ -67,6 +85,27 @@ int make_integer(vector<char>& vc)  {
 	return the_integer;
 }
 
+string make_string(vector<char>& vc)
+{
+	vector<string> powers_of_ten = { " thousand", " hundred", " ten", " one" };
+	string the_string = { NULL };
+	string temp_string = { NULL };
+
+	int power_of_ten = { 1 };
+	int countdown = vc.size();
+
+	for (auto it = begin(vc); it != end(vc); ++it) {
+		if (*it == '0') temp_string.append(" no");
+		else temp_string.append(1,*it);
+		temp_string.append(powers_of_ten[powers_of_ten.size() - countdown]);
+		if (*it == '0' || (*it - '0') > 1) temp_string.append(1, 's');
+		if(it + 1 != end(vc)) temp_string.append(" and ");
+		the_string = temp_string;
+		--countdown;
+	}
+	return the_string;
+}
+
 int main() {
 
 	bool return_value = { false };
@@ -77,10 +116,13 @@ int main() {
 	/*
 	Start the program/play again loop
 	*/
-	cout << "Enter up to four digits > ";
-	return_value = get_user_input(user_input);
-	output(user_input);
-	cout << "The Integer value is: " << make_integer(user_input)<< "\n";
-	keep_window_open();
+	do {
+		cout << "Enter up to four digits > ";
+		user_input.clear();
+		return_value = get_user_input(user_input);
+		output(user_input);
+		cout << "The Integer value is: " << make_integer(user_input) << "\n";
+		cout << make_integer(user_input) << " is " << make_string(user_input) << "\n";
+	} while (yes_no("\n Play again? "));
 }
 
